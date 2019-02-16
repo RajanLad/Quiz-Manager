@@ -1,0 +1,15 @@
+		/*---------------------------------------------*/
+		
+		QuizJDBC_DAO qjd=new QuizJDBC_DAO();
+		Connection con;
+		try {
+		con=qjd.getConnection();
+		
+		System.out.println(""+con.isValid(1));
+		
+		con.close();
+		}catch(Exception e) 
+		{
+			System.out.println("Exception : "+e);
+		}
+		/*---------------------------------------------*/
