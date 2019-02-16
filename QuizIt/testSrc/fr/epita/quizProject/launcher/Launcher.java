@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.Scanner;
 
 import fr.epita.quizProject.datamodel.Administrator;
+import fr.epita.quizProject.datamodel.MCQQuestion;
 import fr.epita.quizProject.datamodel.Student;
 import fr.epita.quizProject.datamodel.Quiz;
 
@@ -50,28 +51,64 @@ class CallOperations
 	
 	protected void addQuestions(QuizJDBC_DAO q_jdbc_dao,Scanner sc)
 	{
-//		QUIZ_ID  	QUESTION_ID  	MCQ_ID  	QUESTION  	ANSWER  	TOPIC  	DIFFCULTY  
-		System.out.println("Enter quiz id from 1 to 10");
-		int quizid=sc.nextInt();
-		sc.nextLine();
-		System.out.println("Enter Question");
-		String question=sc.nextLine();
-		System.out.println("Enter Answer");
-		String answer=sc.nextLine();
-		System.out.println("Enter Topic of question");
-		String topic=sc.nextLine();
-		System.out.println("Enter difficulty of question");
-		int difficulty=sc.nextInt();
-		Quiz qz=new Quiz();
-		qz.setQuizid(quizid);
-		qz.setQuestion(question);
-		qz.setAnswer(answer);
-		qz.setTopic(topic);
-		qz.setDifficulty(difficulty);
-		boolean id=q_jdbc_dao.addQuestiontoDB(qz);
-		//push to DB
-		
-		System.out.println("Hi , you are registered and your id is "+id+" , please don't forget");
+		System.out.println("Type of question 1) Open Question 2) MCQ Question");
+		if(sc.nextInt()==1) {
+			System.out.println("Enter quiz id from 1 to 10");
+			int quizid=sc.nextInt();
+			sc.nextLine();
+			System.out.println("Enter Question");
+			String question=sc.nextLine();
+			System.out.println("Enter Answer");
+			String answer=sc.nextLine();
+			System.out.println("Enter Topic of question");
+			String topic=sc.nextLine();
+			System.out.println("Enter difficulty of question");
+			int difficulty=sc.nextInt();
+			Quiz qz=new Quiz();
+			qz.setQuizid(quizid);
+			qz.setQuestion(question);
+			qz.setAnswer(answer);
+			qz.setTopic(topic);
+			qz.setDifficulty(difficulty);
+			boolean id=q_jdbc_dao.addQuestiontoDB(qz);
+		}
+		else
+		{
+			System.out.println("Enter quiz id from 1 to 10");
+			int quizid=sc.nextInt();
+			sc.nextLine();
+			System.out.println("Enter MCQ Question");
+			String question=sc.nextLine();
+			System.out.println("Enter Option A");
+			String option_a=sc.nextLine();
+			System.out.println("Enter Option B");
+			String option_b=sc.nextLine();
+			System.out.println("Enter Option C");
+			String option_c=sc.nextLine();
+			System.out.println("Enter Option D");
+			String option_d=sc.nextLine();
+			System.out.println("Enter Answer");
+			String answer=sc.nextLine();
+			System.out.println("Enter Topic of question");
+			String topic=sc.nextLine();
+			System.out.println("Enter difficulty of question");
+			int difficulty=sc.nextInt();
+			
+			MCQQuestion mcq=new MCQQuestion();
+			
+			mcq.setOption_a(option_a);
+			mcq.setOption_b(option_b);
+			mcq.setOption_c(option_c);
+			mcq.setOption_d(option_d);
+			
+			Quiz qz=new Quiz();
+			qz.setQuizid(quizid);
+			qz.setQuestion(question);
+			qz.setAnswer(answer);
+			qz.setTopic(topic);
+			qz.setDifficulty(difficulty);
+			boolean id=q_jdbc_dao.addQuestiontoDB(qz);
+		}
 	}
 }
 
@@ -94,11 +131,6 @@ public class Launcher {
 			{
 				String choice = null;
 		        do {
-					System.out.println("1) Add Question");
-					System.out.println("2) See Questions");
-					System.out.println("3) Check Answers");
-					System.out.println("4) Update Questions");
-					System.out.println("5) Quit");
 		        	
 					System.out.println("Choose the choice number");
 		            choice = sc.nextLine();
@@ -122,6 +154,11 @@ public class Launcher {
 		            	break;
 		            } // end of switch
 		            
+					System.out.println("1) Add Question");
+					System.out.println("2) See Questions");
+					System.out.println("3) Check Answers");
+					System.out.println("4) Update Questions");
+					System.out.println("5) Quit");
 
 		        } while (!choice.equals("4")); 
 			}

@@ -10,6 +10,7 @@ Student_ID int,
 FOREIGN KEY (Student_ID ) REFERENCES Student(Student_ID)
 );
 
+
 CREATE TABLE QUIZ
 (
 QUIZ_ID int, 
@@ -18,12 +19,14 @@ MCQ_id int unique null,
 Question varchar(255),
 Answer varchar(255),
 topic varchar(255),
-diffculty varchar(255)
+diffculty varchar(255),
+
+FOREIGN KEY (MCQ_id ) REFERENCES MCQQUESTIONS(MCQ_id )
 );
 
 CREATE TABLE MCQQuestions
 (
-MCQ_id int primary key,
+MCQ_id int auto_increment,
 option_a varchar(255),
 option_b varchar(255),
 option_c varchar(255),
@@ -31,3 +34,6 @@ option_d varchar(255),
 
 FOREIGN KEY (MCQ_id ) REFERENCES Quiz(MCQ_id )
 );
+
+INSERT INTO MCQQUESTIONS (OPTION_A,OPTION_B,OPTION_C,OPTION_D) VALUES('d', 'World','f','d');
+
