@@ -53,6 +53,7 @@ class CallOperations
 	{
 		System.out.println("Type of question 1) Open Question 2) MCQ Question");
 		if(sc.nextInt()==1) {
+			sc.nextLine();
 			System.out.println("Enter quiz id from 1 to 10");
 			int quizid=sc.nextInt();
 			sc.nextLine();
@@ -65,15 +66,17 @@ class CallOperations
 			System.out.println("Enter difficulty of question");
 			int difficulty=sc.nextInt();
 			Quiz qz=new Quiz();
+			MCQQuestion mcq=new MCQQuestion();
 			qz.setQuizid(quizid);
 			qz.setQuestion(question);
 			qz.setAnswer(answer);
 			qz.setTopic(topic);
 			qz.setDifficulty(difficulty);
-			boolean id=q_jdbc_dao.addQuestiontoDB(qz);
+			boolean id=q_jdbc_dao.addQuestiontoDB(qz,false);
 		}
 		else
 		{
+			sc.nextLine();
 			System.out.println("Enter quiz id from 1 to 10");
 			int quizid=sc.nextInt();
 			sc.nextLine();
@@ -101,15 +104,20 @@ class CallOperations
 			mcq.setOption_c(option_c);
 			mcq.setOption_d(option_d);
 			
+			int mcq_id=q_jdbc_dao.addMCQQuestiontoDB(mcq);
+			System.out.println(mcq_id);
+			
 			Quiz qz=new Quiz();
 			qz.setQuizid(quizid);
+			qz.setMcq_id(mcq_id);
 			qz.setQuestion(question);
 			qz.setAnswer(answer);
 			qz.setTopic(topic);
 			qz.setDifficulty(difficulty);
-			boolean id=q_jdbc_dao.addQuestiontoDB(qz);
+			boolean id=q_jdbc_dao.addQuestiontoDB(qz,true);
 		}
 	}
+
 }
 
 public class Launcher {
@@ -150,7 +158,7 @@ public class Launcher {
 		            	System.out.println("4)vmht");
 		            	break;
 		            default:
-		            	System.out.println("5)vmhmvh");
+		            	System.out.println("5)acdvfvfs");
 		            	break;
 		            } // end of switch
 		            
@@ -192,7 +200,7 @@ public class Launcher {
 	            	break;
 	            default:
 	    	        //co.registerStudent(s_jdbc_dao);
-	            	System.out.println("5)vmhmvh");
+	            	System.out.println("5)bffd");
 	            	break;
 	            } // end of switch
 	            

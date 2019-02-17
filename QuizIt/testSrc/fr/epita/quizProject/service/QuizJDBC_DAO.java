@@ -7,6 +7,7 @@ import java.util.List;
 import fr.epita.quizProject.datamodel.Administrator;
 import fr.epita.quizProject.datamodel.Student;
 import fr.epita.quizProject.datamodel.Quiz;
+import fr.epita.quizProject.datamodel.MCQQuestion;
 
 public class QuizJDBC_DAO 
 {
@@ -29,20 +30,21 @@ public class QuizJDBC_DAO
 	
 		}
 		
-//		INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
-
-		
-		public boolean addQuestiontoDB(Quiz quiz) {
-			String sqlCommand = "INSERT INTO QUIZ(QUIZ_ID, QUESTION, ANSWER, TOPIC, DIFFCULTY) VALUES (?,?,?,?,?)";
+		public boolean addQuestiontoDB(Quiz quiz,boolean isAMCQQuestion) {
+			String sqlCommand = "INSERT INTO QUIZ(QUIZ_ID, MCQ_ID, QUESTION, ANSWER, TOPIC, DIFFCULTY) VALUES (?,?,?,?,?,?)";
 			
 			try (Connection connection = getConnection();
 				PreparedStatement insertStatement = connection.prepareStatement(sqlCommand);) {
 				
 				insertStatement.setInt(1,quiz.getQuizid());
-				insertStatement.setString(2,quiz.getQuestion());
-				insertStatement.setString(3,quiz.getAnswer());
-				insertStatement.setString(4,quiz.getTopic());
-				insertStatement.setInt(5,quiz.getDifficulty());
+				if(isAMCQQuestion)
+					insertStatement.setInt(2, quiz.getMcq_id());
+				else if(!isAMCQQuestion)
+					insertStatement.setNull(2, 0);
+				insertStatement.setString(3,quiz.getQuestion());
+				insertStatement.setString(4,quiz.getAnswer());
+				insertStatement.setString(5,quiz.getTopic());
+				insertStatement.setInt(6,quiz.getDifficulty());
 				
 				return insertStatement.execute();
 				
@@ -50,6 +52,40 @@ public class QuizJDBC_DAO
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return false;
+			}
+
+		}
+		
+		public int addMCQQuestiontoDB(MCQQuestion mcq) {
+			String sqlCommand = "INSERT INTO MCQQUESTIONS(option_a, option_b, option_c, option_d) VALUES (?,?,?,?)";
+			String sqlCommandToGetMCQId = "select MCQ_ID from MCQQUESTIONS where option_a=(?)";
+			
+			int id=0;
+			
+			try (Connection connection = getConnection();
+				PreparedStatement insertStatement = connection.prepareStatement(sqlCommand);
+					PreparedStatement selectStatement = connection.prepareStatement(sqlCommandToGetMCQId);) {
+				
+				insertStatement.setString(1,mcq.getOption_a());
+				insertStatement.setString(2,mcq.getOption_b());
+				insertStatement.setString(3,mcq.getOption_c());
+				insertStatement.setString(4,mcq.getOption_d());
+				
+				insertStatement.execute();
+				
+				selectStatement.setString(1,mcq.getOption_a());
+				ResultSet rs = selectStatement.executeQuery();
+				
+				while (rs.next()) {
+					id = rs.getInt("MCQ_ID");
+				}
+				
+				return id;
+				
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return 0;
 			}
 
 		}
