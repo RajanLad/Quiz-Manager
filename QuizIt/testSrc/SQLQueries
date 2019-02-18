@@ -37,3 +37,6 @@ FOREIGN KEY (MCQ_id ) REFERENCES Quiz(MCQ_id )
 
 INSERT INTO MCQQUESTIONS (OPTION_A,OPTION_B,OPTION_C,OPTION_D) VALUES('d', 'World','f','d');
 
+//description of table
+show columns from student;
+

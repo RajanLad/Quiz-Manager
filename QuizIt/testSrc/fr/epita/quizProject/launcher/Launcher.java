@@ -49,7 +49,31 @@ class CallOperations
 		System.out.println("Hi , you are registered and your id is "+id+" , please don't forget");
 	}
 	
-	protected void addQuestions(QuizJDBC_DAO q_jdbc_dao,Scanner sc)
+	protected void giveTheQuiz(StudentJDBC_DAO s_jdbc_dao,Scanner sc)
+	{
+		System.out.println("Enter Student ID");
+		
+		int enteredID=sc.nextInt();
+		
+		Student student=new Student();
+		Quiz qz=new Quiz();
+		
+		student.setId(enteredID);
+		
+		if(s_jdbc_dao.authenticate(student)!=0)
+		{
+			System.out.println("Enter Quiz Number 1-10");
+			int quiz_id=sc.nextInt();
+			qz.setQuizid(quiz_id);
+			s_jdbc_dao.readQuestions(qz);
+		}
+		else
+		{
+			System.out.println("You need to register");
+		}
+	}
+	
+ 	protected void addQuestions(QuizJDBC_DAO q_jdbc_dao,Scanner sc)
 	{
 		System.out.println("Type of question 1) Open Question 2) MCQ Question");
 		if(sc.nextInt()==1) {
@@ -188,7 +212,7 @@ public class Launcher {
 	            	break;
 	            case "2":
 	    	        //co.registerStudent(s_jdbc_dao);
-	            	System.out.println("2) kugjku");
+	            	co.giveTheQuiz(s_jdbc_dao, sc);
 	            	break;
 	            case "3":
 	    	        //co.registerStudent(s_jdbc_dao);
