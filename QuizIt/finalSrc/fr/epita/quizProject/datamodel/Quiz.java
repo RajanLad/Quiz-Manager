@@ -6,13 +6,7 @@ public class Quiz
 	
 	int mcq_id;
 
-	public int getMcq_id() {
-		return mcq_id;
-	}
 
-	public void setMcq_id(int mcq_id) {
-		this.mcq_id = mcq_id;
-	}
 
 	String question;
 
@@ -21,6 +15,24 @@ public class Quiz
 	String topic;
 
 	int difficulty;
+	
+	int questionId;
+	
+	public int getMcq_id() {
+		return mcq_id;
+	}
+
+	public void setMcq_id(int mcq_id) {
+		this.mcq_id = mcq_id;
+	}
+
+	public int getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
 
 	public Quiz()
 	{

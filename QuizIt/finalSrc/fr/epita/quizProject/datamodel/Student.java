@@ -26,11 +26,11 @@ public class Student
 		return name;
 	}
 	
-	public int getId() {
+	public int getStudentId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setStudentId(int id) {
 		this.id = id;
 	}
 }

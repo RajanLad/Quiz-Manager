@@ -1,13 +1,14 @@
 package fr.epita.quizProject.launcher;
 
 import java.sql.Connection;
-import java.util.Scanner;
+import java.util.*;
+import java.util.Map.Entry;
 
 import fr.epita.quizProject.datamodel.Administrator;
 import fr.epita.quizProject.datamodel.MCQQuestion;
 import fr.epita.quizProject.datamodel.Student;
 import fr.epita.quizProject.datamodel.Quiz;
-
+import fr.epita.quizProject.datamodel.Quiz_Result;
 import fr.epita.quizProject.service.QuizJDBC_DAO;
 import fr.epita.quizProject.service.StudentJDBC_DAO;
 
@@ -57,15 +58,54 @@ class CallOperations
 		
 		Student student=new Student();
 		Quiz qz=new Quiz();
+		Quiz_Result qr=new Quiz_Result();
+		MCQQuestion mcq=new MCQQuestion();
 		
-		student.setId(enteredID);
+		student.setStudentId(enteredID);
 		
 		if(s_jdbc_dao.authenticate(student)!=0)
 		{
 			System.out.println("Enter Quiz Number 1-10");
 			int quiz_id=sc.nextInt();
 			qz.setQuizid(quiz_id);
-			s_jdbc_dao.readQuestions(qz);
+			HashMap<Integer,HashMap<String,List<String>>> questionSet=s_jdbc_dao.readQuestions(qz);
+			
+			//System.out.println(questionSet.toString());
+			
+			for (Entry<Integer, HashMap<String,List<String>>> qSet : questionSet.entrySet()) {
+				
+			    qz.setQuestionId(qSet.getKey());
+			    qr.setQuestion_id(qSet.getKey());
+			    
+			    for (Entry<String, List<String>> quest : qSet.getValue().entrySet()) {
+				    qz.setQuestion(quest.getKey());
+					System.out.println("THe Question is : ");
+					System.out.println(quest.getKey());
+					qr.setQuestion(quest.getKey());
+					
+				    if(!quest.getValue().isEmpty()) {
+			    	System.out.println("THe Options are  : ");
+					System.out.println(quest.getValue().get(0));	
+					System.out.println(quest.getValue().get(1));	
+					System.out.println(quest.getValue().get(2));	
+					System.out.println(quest.getValue().get(3));	
+				    mcq.setOption_a(quest.getValue().get(0));
+				    mcq.setOption_a(quest.getValue().get(1));
+				    mcq.setOption_a(quest.getValue().get(2));
+				    mcq.setOption_a(quest.getValue().get(3));
+				    }
+			    
+			    }
+			    
+			    System.out.print("Answer : ");
+			    String answer=sc.next();
+			    qr.setAnswer(answer);
+			    
+			    s_jdbc_dao.setResults(qz, student, qr);
+			}
+			
+			
+
 		}
 		else
 		{
@@ -142,6 +182,127 @@ class CallOperations
 		}
 	}
 
+	public void viewQuestions(QuizJDBC_DAO q_jdbc_dao, Scanner sc) {
+				// TODO Auto-generated method stub
+		System.out.println("Do you wish to view all questions or a particular question.\n Select 1) To View All Questions \n 2) To View a particular question");
+		if(sc.nextInt()==1) {
+			sc.nextLine();
+			q_jdbc_dao.displayAllQuestions(0);
+		}
+		else if(sc.nextInt()==2) {
+			sc.nextLine();
+			System.out.println("Enter quiz id from 1 to 10");
+			int quizid=sc.nextInt();
+			q_jdbc_dao.displayAllQuestions(quizid);
+		}
+		else
+		{
+			System.out.println("Please select a valid option either 1 or 2");
+		}
+	}
+
+	public void checkAnswer(QuizJDBC_DAO q_jdbc_dao, Scanner sc) {
+		// TODO Auto-generated method stub
+		q_jdbc_dao.displayStudentNameID();
+		System.out.println("Please enter the Id of the student");
+		int selectedID = sc.nextInt();
+		sc.nextLine();
+		q_jdbc_dao.checkAnswer(selectedID);
+		
+	}
+
+	public void updateQuestion(QuizJDBC_DAO q_jdbc_dao, Scanner sc) {
+		// TODO Auto-generated method stub
+		
+		System.out.println("Type of question to update 1) Open Question 2) MCQ Question");
+		if(sc.nextInt()==1) {
+			sc.nextLine();
+			System.out.println("Enter quiz id to update");
+			int quizid=sc.nextInt();
+			sc.nextLine();
+			System.out.println("Enter Question id to update");
+			int questionId = sc.nextInt();
+			sc.nextLine();
+			System.out.println("Enter Question to update");
+			String question=sc.nextLine();
+			System.out.println("Enter Answer to update");
+			String answer=sc.nextLine();
+			System.out.println("Enter Topic of question to update");
+			String topic=sc.nextLine();
+			System.out.println("Enter difficulty of question to update");
+			int difficulty=sc.nextInt();
+			sc.nextLine();
+			Quiz qz=new Quiz();
+			qz.setQuizid(quizid);
+			qz.setQuestion(question);
+			qz.setAnswer(answer);
+			qz.setTopic(topic);
+			qz.setDifficulty(difficulty);
+			qz.setQuestionId(questionId);
+			q_jdbc_dao.updateQuestiontoDB(qz,false);
+		}
+		else
+		{
+			sc.nextLine();
+			System.out.println("Enter quiz id to update");
+			int quizid=sc.nextInt();
+			sc.nextLine();
+			System.out.println("Enter Question id to update");
+			int questionId=sc.nextInt();
+			sc.nextLine();
+			System.out.println("Enter MCQ id to update");
+			int mcqId=sc.nextInt();
+			sc.nextLine();
+			System.out.println("Enter MCQ Question to update");
+			String question=sc.nextLine();
+			System.out.println("Enter Option A");
+			String option_a=sc.nextLine();
+			System.out.println("Enter Option B");
+			String option_b=sc.nextLine();
+			System.out.println("Enter Option C");
+			String option_c=sc.nextLine();
+			System.out.println("Enter Option D");
+			String option_d=sc.nextLine();
+			System.out.println("Enter Answerto Update");
+			String answer=sc.nextLine();
+			System.out.println("Enter Topic of questionto update");
+			String topic=sc.nextLine();
+			System.out.println("Enter difficulty of question to update");
+			int difficulty=sc.nextInt();
+			sc.nextLine();
+
+			MCQQuestion mcq=new MCQQuestion();
+			
+			mcq.setOption_a(option_a);
+			mcq.setOption_b(option_b);
+			mcq.setOption_c(option_c);
+			mcq.setOption_d(option_d);
+			
+			q_jdbc_dao.updateMCQQuestiontoDB(mcq, mcqId);
+			
+			Quiz qz=new Quiz();
+			qz.setQuizid(quizid);
+			qz.setMcq_id(mcqId);
+			qz.setQuestion(question);
+			qz.setAnswer(answer);
+			qz.setTopic(topic);
+			qz.setDifficulty(difficulty);
+			qz.setQuestionId(questionId);
+			q_jdbc_dao.updateQuestiontoDB(qz,true);
+		}
+
+	}
+
+	public void deleteQuestion(QuizJDBC_DAO q_jdbc_dao, Scanner sc) {
+		// TODO Auto-generated method stub
+		System.out.println("Please enter the Quiz id of the question to delete");
+		int quizId = sc.nextInt();
+		sc.nextLine();
+		System.out.println("Please enter the Question id of the question to delete");
+		int questionId = sc.nextInt();
+		sc.nextLine();
+		q_jdbc_dao.deleteQuestion(quizId, questionId);
+	}
 }
 
 public class Launcher {
@@ -171,14 +332,19 @@ public class Launcher {
 		            	co.addQuestions(q_jdbc_dao, sc);
 		            	break;
 		            case "2":
-
+		            		
 		            	System.out.println("2) kugjku");
 		            	break;
 		            case "3":
-
+		            	co.checkAnswer(q_jdbc_dao, sc);
 		            	System.out.println("3) fkh");
 		            	break;
 		            case "4":
+		            	co.updateQuestion(q_jdbc_dao, sc);
+		            	System.out.println("4)vmht");
+		            	break;
+		            case "5":
+		            	co.deleteQuestion(q_jdbc_dao, sc);
 		            	System.out.println("4)vmht");
 		            	break;
 		            default:
@@ -189,10 +355,10 @@ public class Launcher {
 					System.out.println("1) Add Question");
 					System.out.println("2) See Questions");
 					System.out.println("3) Check Answers");
-					System.out.println("4) Update Questions");
-					System.out.println("5) Quit");
+					System.out.println("4) Update Question");
+					System.out.println("5) Delete Question");
 
-		        } while (!choice.equals("4")); 
+		        } while (!choice.equals("5")); 
 			}
 			else
 			{
