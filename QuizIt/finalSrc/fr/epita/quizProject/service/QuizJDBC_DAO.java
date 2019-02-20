@@ -153,6 +153,28 @@ public class QuizJDBC_DAO
 				e.printStackTrace();
 			}
 		}
+		
+		public int checkResults(int student_id)
+		{
+			String sqlCommand = "SELECT count(*)  FROM QUIZ_TAKEN_BY_STUDENT where student_id=(?) and ISRIGHT=TRUE";
+			int score=0;
+					
+			try (Connection connection = getConnection();
+				PreparedStatement displayQuery = connection.prepareStatement(sqlCommand);) {
+				displayQuery.setInt(1, student_id);
+				ResultSet displayStudNameResult = displayQuery.executeQuery();
+				
+				while (displayStudNameResult.next()) {
+					score = displayStudNameResult.getInt(1);
+				}
+				
+				return score;
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return score;
+			}
+		}
 
 		public void checkAnswer(int selectedID) {
 			// TODO Auto-generated method stub
@@ -173,7 +195,7 @@ public class QuizJDBC_DAO
 					questionId = getDetails.getInt("QUESTION_ID");
 					answer = getDetails.getString("QUESTION_ANSWERS");
 					isRight = getDetails.getString("ISRIGHT");
-					if(isRight!=null)
+					if(isRight==null)
 					{
 						PreparedStatement checkingFrAnswer = connection.prepareStatement(checkAns);
 						checkingFrAnswer.setInt(1, quizId);

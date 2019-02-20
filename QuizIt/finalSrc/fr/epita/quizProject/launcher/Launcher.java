@@ -303,6 +303,15 @@ class CallOperations
 		sc.nextLine();
 		q_jdbc_dao.deleteQuestion(quizId, questionId);
 	}
+
+	public void checkTheScore(QuizJDBC_DAO q_jdbc_dao, Scanner sc) {
+		// TODO Auto-generated method stub
+		System.out.println("Please enter the your student ID");
+		int stud_id = sc.nextInt();
+		sc.nextLine();
+		System.out.println("Your Score is : "+q_jdbc_dao.checkResults(stud_id));
+	}
+
 }
 
 public class Launcher {
@@ -331,24 +340,20 @@ public class Launcher {
 		            case "1":
 		            	co.addQuestions(q_jdbc_dao, sc);
 		            	break;
-		            case "2":
-		            		
-		            	System.out.println("2) kugjku");
+		            case "2":	
+		            	co.viewQuestions(q_jdbc_dao, sc);
 		            	break;
 		            case "3":
 		            	co.checkAnswer(q_jdbc_dao, sc);
-		            	System.out.println("3) fkh");
 		            	break;
 		            case "4":
 		            	co.updateQuestion(q_jdbc_dao, sc);
-		            	System.out.println("4)vmht");
 		            	break;
 		            case "5":
 		            	co.deleteQuestion(q_jdbc_dao, sc);
-		            	System.out.println("4)vmht");
 		            	break;
 		            default:
-		            	System.out.println("5)acdvfvfs");
+		            	System.out.println("");
 		            	break;
 		            } // end of switch
 		            
@@ -357,12 +362,13 @@ public class Launcher {
 					System.out.println("3) Check Answers");
 					System.out.println("4) Update Question");
 					System.out.println("5) Delete Question");
+					System.out.println("6) Quit");
 
-		        } while (!choice.equals("5")); 
+		        } while (!choice.equals("6")); 
 			}
 			else
 			{
-				System.out.println("sfvsdgfvf");
+				System.out.println("Sorry, we couldn't Authenticate you");
 			}
 		}
 		else if(temp_selection_type_user==2)
@@ -373,24 +379,18 @@ public class Launcher {
 	            choice = sc.nextLine();
 	            switch (choice) {
 	            case "1":
-	    	        //co.registerStudent(s_jdbc_dao);
 	            	co.registerStudent(s_jdbc_dao,sc);
 	            	break;
 	            case "2":
-	    	        //co.registerStudent(s_jdbc_dao);
 	            	co.giveTheQuiz(s_jdbc_dao, sc);
 	            	break;
 	            case "3":
-	    	        //co.registerStudent(s_jdbc_dao);
-	            	System.out.println("3) fkh");
+	            	co.checkTheScore(q_jdbc_dao,sc);
 	            	break;
 	            case "4":
-	    	        //co.registerStudent(s_jdbc_dao);
-	            	System.out.println("4)vmht");
 	            	break;
 	            default:
-	    	        //co.registerStudent(s_jdbc_dao);
-	            	System.out.println("5)bffd");
+	            	System.out.println("");
 	            	break;
 	            } // end of switch
 	            
