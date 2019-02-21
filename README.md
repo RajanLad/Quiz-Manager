@@ -157,3 +157,49 @@ public int authenticate(Student student) {
 	}
   
   ```
+
+## DB Tables and their fields
+```
+create table Student 
+(
+id int auto_increment, 
+studentname varchar(255)
+);
+```
+```
+CREATE TABLE Quiz_Taken_By_Student
+(
+Quiz_ID INT, 
+Question_id INT,
+Question VARCHAR(255),
+Question_Answers VARCHAR(255),
+Student_ID int,
+FOREIGN KEY (Student_ID ) REFERENCES Student(Student_ID)
+);
+```
+```
+CREATE TABLE QUIZ
+(
+QUIZ_ID int, 
+Question_id int auto_increment,
+MCQ_id int unique null,
+Question varchar(255),
+Answer varchar(255),
+topic varchar(255),
+diffculty varchar(255),
+
+FOREIGN KEY (MCQ_id ) REFERENCES MCQQUESTIONS(MCQ_id )
+);
+```
+```
+CREATE TABLE MCQQuestions
+(
+MCQ_id int auto_increment,
+option_a varchar(255),
+option_b varchar(255),
+option_c varchar(255),
+option_d varchar(255)
+);
+```
+
+
